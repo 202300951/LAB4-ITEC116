@@ -1,0 +1,26 @@
+[
+  {
+    "dlqId": "DLQ-1794926365825",
+    "failedAt": "2026-11-17T14:39:25.825Z",
+    "targetEndpoint": "https://api.enterprise.local/support/webhooks",
+    "attemptsMade": 5,
+    "lastError": "HTTP 503 Service Unavailable - Cust_Support webhook timeout",
+    "status": "REPROCESSED",
+    "eventPayload": {
+      "event": "support.client_profile_synced",
+      "timestamp": "2026-09-15T10:00:00.000Z",
+      "targetModule": "Cust_Support",
+      "data": {
+        "client_key": "CUST-1049",
+        "account_name": "Lenerd Delos Santos",
+        "delivery_flag": false,
+        "ticket_creation_allowed": false,
+        "sla_tier": "VIP_Gold",
+        "opportunity_ref": "OPP-5021",
+        "payment_status": "PAID",
+        "sales_rep_email": "omar@Mcgowan.com"
+      }
+    },
+    "reprocessedAt": "2026-11-17T14:39:25.834Z"
+  }
+]

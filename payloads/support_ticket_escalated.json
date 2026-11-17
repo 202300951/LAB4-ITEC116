@@ -1,0 +1,14 @@
+{
+  "event": "support.ticket_escalated",
+  "timestamp": "2026-09-15T10:30:00Z",
+  "payload": {
+    "ticket_id": "TCK-9901",
+    "client_key": "CUST-1049",
+    "account_name": "Lenerd Delos Santos",
+    "delivery_flag": false,
+    "sla_tier": "VIP_Gold",
+    "ticket_status": "OPEN",
+    "issue_category": "Delivery Exception",
+    "issue_summary": "Shipment delayed at regional hub; critical onboarding deadline affected."
+  }
+}

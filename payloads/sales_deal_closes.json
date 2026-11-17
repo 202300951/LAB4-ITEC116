@@ -1,0 +1,15 @@
+{
+  "event": "sales.deal_closes",
+  "timestamp": "2026-09-15T10:00:00Z",
+  "payload": {
+    "opportunityId": "OPP-5021",
+    "customerId": "CUST-1049",
+    "customerName": "  Lenerd Delos Santos  ",
+    "orderTotal": 25000.00,
+    "paymentStatus": "PAID",
+    "accountTier": "Priority_1",
+    "status": "AT_FRONT",
+    "orderStatus": 0,
+    "salesRepEmail": "omar@Mcgowan.com"
+  }
+}

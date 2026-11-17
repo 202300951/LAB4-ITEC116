@@ -1,0 +1,9 @@
+{
+  "name": "itec116-sales-support-integration",
+  "version": "1.0.0",
+  "description": "ITEC 116 Group Activity 4 - Cross-Module Sales & Support Integration",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  }
+}

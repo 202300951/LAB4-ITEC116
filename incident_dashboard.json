@@ -1,0 +1,13 @@
+[
+  {
+    "incidentId": "INC-1794926365828",
+    "severity": "HIGH",
+    "sourceModule": "Sales_CRM",
+    "targetModule": "Cust_Support",
+    "message": "Webhook delivery failed after 5 retry cycles. Routed to DLQ (DLQ-1794926365825).",
+    "timestamp": "2026-11-17T14:39:25.828Z",
+    "dlqRef": "DLQ-1794926365825",
+    "resolved": true,
+    "resolvedAt": "2026-11-17T14:39:25.836Z"
+  }
+]

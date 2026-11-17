@@ -1,0 +1,55 @@
+const salesDealEvent = require("./payloads/sales_deal_closes.json");
+const supportEscalationEvent = require("./payloads/support_ticket_escalated.json");
+const { transformSalesToSupport, transformSupportToSales } = require("./transformer");
+const { dispatchWebhookWithRetry, reprocessFromDLQ } = require("./resilience");
+
+// Simulated in-memory module databases
+const salesCrmDb = new Map();
+const custSupportDb = new Map();
+
+// Mock REST endpoints
+async function postToCustomerSupport(transformedPayload) {
+  custSupportDb.set(transformedPayload.data.client_key, transformedPayload.data);
+  return { status: 200, module: "Cust_Support", stored: transformedPayload.data };
+}
+
+async function postToSalesCrm(transformedPayload) {
+  salesCrmDb.set(transformedPayload.data.customer_id, transformedPayload.data);
+  return { status: 200, module: "Sales_CRM", stored: transformedPayload.data };
+}
+
+async function runIntegrationDemo() {
+  console.log("=== 1. SALES-TO-SUPPORT EVENT & MAPPING ===");
+  const supportPayload = transformSalesToSupport(salesDealEvent);
+  console.log(JSON.stringify(supportPayload, null, 2));
+  await postToCustomerSupport(supportPayload);
+
+  console.log("\n=== 2. SUPPORT-TO-SALES ESCALATION & CONDITIONAL TRIGGER ===");
+  const salesUpdatePayload = transformSupportToSales(supportEscalationEvent);
+  console.log(JSON.stringify(salesUpdatePayload, null, 2));
+  await postToSalesCrm(salesUpdatePayload);
+
+  console.log("\n=== 3. RESILIENCY, EXPONENTIAL BACKOFF & DLQ RECOVERY ===");
+  // Simulate Customer Support service outage (503 Service Unavailable)
+  const failingSupportEndpoint = async () => {
+    throw new Error("HTTP 503 Service Unavailable - Cust_Support webhook timeout");
+  };
+
+  // delayScale: 0.05 speeds up the 2s-4s-8s-16s-32s demo run; set to 1 for real-time delays
+  const deliveryResult = await dispatchWebhookWithRetry(
+    supportPayload,
+    failingSupportEndpoint,
+    { delayScale: 0.05 }
+  );
+
+  if (!deliveryResult.success) {
+    console.log("\n--- Simulating Customer Support Service Recovery & One-Click Reprocess ---");
+    const recoveryResult = await reprocessFromDLQ(
+      deliveryResult.dlqRecord.dlqId,
+      postToCustomerSupport
+    );
+    console.log(JSON.stringify(recoveryResult, null, 2));
+  }
+}
+
+runIntegrationDemo().catch(console.error);
